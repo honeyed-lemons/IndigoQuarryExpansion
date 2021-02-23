@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using HarmonyLib;
 using SRML;
 using SRML.SR;
 using SRML.SR.Translation;
@@ -30,7 +28,7 @@ namespace iqe
                     new SlimeSet.Member
                     {
                         prefab = GameContext.Instance.LookupDirector.GetPrefab(Id.OIL_SLIME),
-                        weight = 0.5f 
+                        weight = 0.05f 
                     }
                 };
 
@@ -40,6 +38,16 @@ namespace iqe
                 }
             };
             HarmonyInstance.PatchAll();
+            PediaRegistry.RegisterIdentifiableMapping(PediaDirector.Id.PLORTS, Id.OIL_PLORT);
+            PediaRegistry.RegisterIdentifiableMapping(Id.OIL_SLIME_ENTRY, Id.OIL_SLIME);
+            PediaRegistry.SetPediaCategory(Id.OIL_SLIME_ENTRY, (PediaRegistry.PediaCategory)1);
+            new SlimePediaEntryTranslation(Id.OIL_SLIME_ENTRY).SetTitleTranslation("Oil Slime")
+                .SetIntroTranslation("Capatalism at its finest!")
+                .SetDietTranslation("Veggies")
+                .SetFavoriteTranslation("Carrot")
+                .SetSlimeologyTranslation("Oil slimes are.. Weird. They're not actually made of oil, but an Oil like substance, but their plorts are oil! So strange.")
+                .SetRisksTranslation("Though Oil slimes provide little risk, it's reccomended to keep them away from any and all Fire Slimes.")
+                .SetPlortonomicsTranslation("Oil Plorts are of course, Oil, and can be used for many purposes. (Viktor engineered Cooking Oil Slimes for his kitchen! Woah!)");
         }
 
         public override void Load()
@@ -61,7 +69,7 @@ namespace iqe
             LookupRegistry.RegisterVacEntry(Id.OIL_PLORT, HexColour.FromHex("28304D"), sprite);
             SRSingleton<GameContext>.Instance.LookupDirector.GetPrefab(Id.OIL_PLORT).GetComponent<Vacuumable>().size = Vacuumable.Size.NORMAL;
             TranslationPatcher.AddActorTranslation("l.oil_plort", "Oil Plort");
-            PlortRegistry.RegisterPlort(Id.OIL_PLORT, 25f, 150f);
+            PlortRegistry.RegisterPlort(Id.OIL_PLORT, 25f, 500);
             DroneRegistry.RegisterBasicTarget(Id.OIL_PLORT);
 
             SlimeDefinition pinkSlimeDefinition = SRSingleton<GameContext>.Instance.SlimeDefinitions.GetSlimeByIdentifiableId(Identifiable.Id.PINK_SLIME);
@@ -145,10 +153,26 @@ namespace iqe
             TranslationPatcher.AddActorTranslation("l.oil_slime", "Oil Slime");
             Sprite spriteOilSlime = Main.assetBundle.LoadAsset<Sprite>("iconSlimeOil");
             slimeAppearance.Icon = Main.assetBundle.LoadAsset<Sprite>("iconSlimeOil");
+            PediaRegistry.RegisterIdEntry(Id.OIL_SLIME_ENTRY, slimeAppearance.Icon);
         }
 
         public override void PostLoad()
         {
+            SlimeDefinition slimeByIdentifiableId3 = SRSingleton<GameContext>.Instance.SlimeDefinitions.GetSlimeByIdentifiableId(Id.OIL_SLIME);
+            slimeByIdentifiableId3.Diet.EatMap.Add(new SlimeDiet.EatMapEntry
+            {
+                eats = Identifiable.Id.FIRE_PLORT,
+                becomesId = Identifiable.Id.BOOM_SLIME,
+                driver = SlimeEmotions.Emotion.NONE,
+            });
+            SlimeDefinition slimeByIdentifiableId4 = SRSingleton<GameContext>.Instance.SlimeDefinitions.GetSlimeByIdentifiableId(Identifiable.Id.TARR_SLIME);
+            slimeByIdentifiableId4.Diet.EatMap.Add(new SlimeDiet.EatMapEntry
+            {
+                eats = Id.OIL_SLIME,
+                becomesId = Identifiable.Id.NONE,
+                driver = SlimeEmotions.Emotion.NONE,
+                producesId = Identifiable.Id.TARR_SLIME
+            });
         }
 
         public static Stream manifestResourceStream = Assembly.GetExecutingAssembly().GetManifestResourceStream("IQE.iqe");
