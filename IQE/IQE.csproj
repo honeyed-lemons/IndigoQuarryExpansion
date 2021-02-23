@@ -64,5 +64,8 @@
   <ItemGroup>
     <EmbeddedResource Include="modinfo.json" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="iqe" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
