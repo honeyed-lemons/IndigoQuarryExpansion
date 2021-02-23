@@ -47,7 +47,7 @@ namespace iqe
                 .SetFavoriteTranslation("Carrot")
                 .SetSlimeologyTranslation("Oil slimes are.. Weird. They're not actually made of oil, but an Oil like substance, but their plorts are oil! So strange.")
                 .SetRisksTranslation("Though Oil slimes provide little risk, it's reccomended to keep them away from any and all Fire Slimes.")
-                .SetPlortonomicsTranslation("Oil Plorts are of course, Oil, and can be used for many purposes. (Viktor engineered Cooking Oil Slimes for his kitchen! Woah!)");
+                .SetPlortonomicsTranslation("Oil Plorts are of course, Oil, and can be used for many purposes. (Viktor engineered Cooking Oil Slimes for his kitchen! Woah!). Though to be wary, Oil Slime Plorts fluctuate a lot on the plort market, so make sure to keep them in silos until you sell.");
         }
 
         public override void Load()
